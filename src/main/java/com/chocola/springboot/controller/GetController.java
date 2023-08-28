@@ -1,6 +1,8 @@
 package com.chocola.springboot.controller;
 
 import com.chocola.springboot.dto.MemberDto;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -29,10 +31,12 @@ public class GetController {
         return string;
     }
 
+    @ApiOperation(value = "GET 메서드 예제", notes = "@requestParam을 활용한 GET Method")
     @GetMapping("/request1")
-    public String getRequestParam1(@RequestParam String name,
-                                   @RequestParam(required = false) String email,
-                                   @RequestParam(required = false, defaultValue = "default") String organization) {
+    public String getRequestParam1(
+            @ApiParam(value = "이름", required = true) @RequestParam String name,
+            @ApiParam(value = "이메일", required = false) @RequestParam(required = false) String email,
+            @ApiParam(value = "회사", required = false) @RequestParam(required = false, defaultValue = "default") String organization) {
         return name + ", " + email + ", " + organization;
     }
 
