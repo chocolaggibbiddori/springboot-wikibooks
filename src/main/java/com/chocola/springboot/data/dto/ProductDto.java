@@ -16,4 +16,15 @@ public class ProductDto {
         this.price = price;
         this.stock = stock;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ProductDto productDto) {
+            return this.name.equals(productDto.getName()) &&
+                   this.price == productDto.getPrice() &&
+                   this.stock == productDto.getStock();
+        }
+
+        return false;
+    }
 }
