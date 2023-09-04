@@ -1,6 +1,8 @@
 package com.chocola.springboot.data.repository;
 
 import com.chocola.springboot.data.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,4 +18,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByNameOrderByPriceDesc(String name);
     List<Product> findAllByOrderByNameAscPrice();
     List<Product> findByName(String name, Sort sort);
+
+    Page<Product> findAll(Pageable pageable); // PagingAndSortingRepository에 이미 정의되어 있음
 }

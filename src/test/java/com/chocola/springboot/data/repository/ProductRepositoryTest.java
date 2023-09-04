@@ -4,6 +4,8 @@ import com.chocola.springboot.data.entity.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 
@@ -114,12 +116,36 @@ class ProductRepositoryTest {
 
         //w
         List<Product> list1 = productRepository.findByName("펜", Sort.by("price", "stock"));
-        List<Product> list2 = productRepository.findByName("펜", Sort.by(Sort.Direction.DESC, "stock"));
+        List<Product> list2 = productRepository.findByName("펜", Sort.by(Sort.Direction.DESC, "price", "stock"));
         List<Product> list3 = productRepository.findByName("펜", Sort.by(Order.desc("price"), Order.asc("stock")));
 
         //t
         System.out.println("list1 = " + list1);
         System.out.println("list2 = " + list2);
         System.out.println("list3 = " + list3);
+    }
+
+    @Test
+    void pagingTest() {
+        //g
+        productRepository.save(new Product("pen", 1000, 6000));
+        productRepository.save(new Product("pen", 2000, 5000));
+        productRepository.save(new Product("pen", 3000, 4000));
+        productRepository.save(new Product("pen", 4000, 3000));
+        productRepository.save(new Product("pen", 5000, 2000));
+        productRepository.save(new Product("pen", 6000, 1000));
+        productRepository.save(new Product("eraser", 1000, 4000));
+        productRepository.save(new Product("eraser", 2000, 3000));
+        productRepository.save(new Product("eraser", 3000, 2000));
+        productRepository.save(new Product("eraser", 4000, 1000));
+
+        //w
+        Page<Product> list = productRepository.findAll(PageRequest.of(1, 2, Sort.by("price")));
+
+        //t
+        System.out.println(list);
+        System.out.println(list.getContent());
+        System.out.println(list.getTotalElements());
+        System.out.println(list.getTotalPages());
     }
 }
