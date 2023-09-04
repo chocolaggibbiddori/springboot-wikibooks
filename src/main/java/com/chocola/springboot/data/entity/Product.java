@@ -4,8 +4,12 @@ import com.chocola.springboot.data.dto.ProductDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -13,6 +17,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString(exclude = {"createdAt", "updatedAt"})
 @Entity
 public class Product {
 
@@ -33,6 +38,14 @@ public class Product {
         this.name = name;
         this.price = price;
         this.stock = stock;
+    }
+
+    public Product(String name, int price, int stock, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Product(ProductDto productDto) {
