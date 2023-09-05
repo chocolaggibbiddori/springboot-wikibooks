@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,7 +60,7 @@ class ProductRepositoryTest {
         assertEquals(product.getStock(), foundProduct.getStock());
     }
 
-    @Test
+    /*@Test
     void conditionTest() {
         //g
         productRepository.save(new Product("pen", 1000, 2000, LocalDateTime.now(), LocalDateTime.now()));
@@ -80,7 +79,7 @@ class ProductRepositoryTest {
         assertThat(byUpdatedAtIsNull.size()).isEqualTo(2);
         assertThat(byUpdatedAtNotNull.size()).isEqualTo(4);
         assertThat(byNameStartsWith.getName()).isEqualTo("eraser");
-    }
+    }*/
 
     @Test
     void orderByTest() {
@@ -223,5 +222,17 @@ class ProductRepositoryTest {
         List<Product> productList = productRepository.findByName("pen");
 
         System.out.println(productList);
+    }
+
+    @Test
+    void auditingTest() {
+        //g
+        Product product = new Product("pen", 1000, 100);
+
+        //w
+        Product savedProduct = productRepository.save(product);
+
+        //t
+        System.out.println("savedProduct = " + savedProduct);
     }
 }

@@ -10,16 +10,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"createdAt", "updatedAt"})
+@ToString(callSuper = true)
 @Entity
-public class Product {
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -31,28 +30,15 @@ public class Product {
     @Column(nullable = false)
     private int stock;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
     public Product(String name, int price, int stock) {
         this.name = name;
         this.price = price;
         this.stock = stock;
     }
 
-    public Product(String name, int price, int stock, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.name = name;
-        this.price = price;
-        this.stock = stock;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
     public Product(ProductDto productDto) {
         this.name = productDto.getName();
         this.price = productDto.getPrice();
         this.stock = productDto.getStock();
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
     }
 }
