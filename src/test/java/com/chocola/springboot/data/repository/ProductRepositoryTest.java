@@ -148,4 +148,17 @@ class ProductRepositoryTest {
         System.out.println(list.getTotalElements());
         System.out.println(list.getTotalPages());
     }
+
+    @Test
+    void parameterBindingTest() {
+        //g
+        productRepository.save(new Product("pen", 1000, 6000));
+
+        //w
+        List<Product> foundProduct1 = productRepository.findByNameParameterBinding("pen");
+        List<Product> foundProduct2 = productRepository.findByNameParameterBindingWithParam("pen");
+
+        //t
+        assertThat(foundProduct1).isEqualTo(foundProduct2);
+    }
 }
