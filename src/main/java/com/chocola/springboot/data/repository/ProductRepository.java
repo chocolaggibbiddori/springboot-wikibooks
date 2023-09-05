@@ -1,6 +1,7 @@
 package com.chocola.springboot.data.repository;
 
 import com.chocola.springboot.data.entity.Product;
+import com.chocola.springboot.data.repository.support.ProductRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -10,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
 
     List<Product> findByUpdatedAtIsNull();
     List<Product> findByUpdatedAtNotNull();

@@ -211,4 +211,17 @@ class ProductRepositoryTest {
 
         productList.stream().forEach(System.out::println);
     }
+
+    @Test
+    void customTest() {
+        productRepository.save(new Product("pen", 1000, 6000));
+        productRepository.save(new Product("pen", 5000, 6000));
+        productRepository.save(new Product("pen", 4000, 6000));
+        productRepository.save(new Product("eraser", 3000, 6000));
+        productRepository.save(new Product("eraser", 2000, 6000));
+
+        List<Product> productList = productRepository.findByName("pen");
+
+        System.out.println(productList);
+    }
 }
