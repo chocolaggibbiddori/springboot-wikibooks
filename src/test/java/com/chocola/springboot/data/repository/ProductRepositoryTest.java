@@ -1,25 +1,36 @@
 package com.chocola.springboot.data.repository;
 
 import com.chocola.springboot.data.entity.Product;
+import com.chocola.springboot.data.entity.QProduct;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DataJpaTest
+@Transactional
+@SpringBootTest
 class ProductRepositoryTest {
 
     @Autowired
-    private ProductRepository productRepository;
+    ProductRepository productRepository;
+    @PersistenceContext
+    EntityManager em;
+    @Autowired
+    JPAQueryFactory jpaQueryFactory;
 
     @Test
     void saveTest() {
@@ -42,7 +53,7 @@ class ProductRepositoryTest {
         Product savedProduct = productRepository.save(product);
 
         //w
-        Product foundProduct = productRepository.getById(savedProduct.getId());
+        Product foundProduct = productRepository.findById(savedProduct.getId()).get();
 
         //t
         assertEquals(product.getName(), foundProduct.getName());
@@ -160,5 +171,44 @@ class ProductRepositoryTest {
 
         //t
         assertThat(foundProduct1).isEqualTo(foundProduct2);
+    }
+
+    @Test
+    void querydslTest() {
+        productRepository.save(new Product("pen", 1000, 6000));
+        productRepository.save(new Product("pen", 5000, 6000));
+        productRepository.save(new Product("pen", 4000, 6000));
+        productRepository.save(new Product("pen", 3000, 6000));
+        productRepository.save(new Product("pen", 2000, 6000));
+
+        JPAQuery<Product> query = new JPAQuery<>(em);
+        QProduct qProduct = QProduct.product;
+
+        List<Product> productList = query
+                .from(qProduct)
+                .where(qProduct.name.eq("pen"))
+                .orderBy(qProduct.price.asc())
+                .fetch();
+
+        System.out.println(productList);
+    }
+
+    @Test
+    void querydslTest2() {
+        productRepository.save(new Product("pen", 1000, 6000));
+        productRepository.save(new Product("pen", 5000, 6000));
+        productRepository.save(new Product("pen", 4000, 6000));
+        productRepository.save(new Product("pen", 3000, 6000));
+        productRepository.save(new Product("pen", 2000, 6000));
+
+        QProduct qProduct = QProduct.product;
+
+        List<Product> productList = jpaQueryFactory
+                .selectFrom(qProduct)
+                .where(qProduct.name.eq("pen"))
+                .orderBy(qProduct.price.desc())
+                .fetch();
+
+        productList.stream().forEach(System.out::println);
     }
 }
