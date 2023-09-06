@@ -6,10 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -23,12 +22,19 @@ public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private int price;
+
     @Column(nullable = false)
     private int stock;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "product")
+    private ProductDetail productDetail;
 
     public Product(String name, int price, int stock) {
         this.name = name;
@@ -40,5 +46,17 @@ public class Product extends BaseEntity {
         this.name = productDto.getName();
         this.price = productDto.getPrice();
         this.stock = productDto.getStock();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product product)) return false;
+        return Objects.equals(id, product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
