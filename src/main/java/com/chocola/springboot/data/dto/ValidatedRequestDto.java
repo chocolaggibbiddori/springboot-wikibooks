@@ -1,5 +1,6 @@
 package com.chocola.springboot.data.dto;
 
+import com.chocola.springboot.config.annotation.Telephone;
 import com.chocola.springboot.data.group.ValidationGroup1;
 import com.chocola.springboot.data.group.ValidationGroup2;
 import lombok.*;
@@ -19,7 +20,7 @@ public class ValidatedRequestDto {
     @Email
     private String email;
 
-    @Pattern(regexp = "01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$")
+    @Telephone
     private String phoneNumber;
 
     @Min(value = 20, groups = ValidationGroup1.class)
