@@ -32,9 +32,9 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private int stock;
 
-    @ToString.Exclude
-    @OneToOne(mappedBy = "product")
-    private ProductDetail productDetail;
+    @ManyToOne
+    @JoinColumn(name = "provider_id")
+    private Provider provider;
 
     public Product(String name, int price, int stock) {
         this.name = name;
