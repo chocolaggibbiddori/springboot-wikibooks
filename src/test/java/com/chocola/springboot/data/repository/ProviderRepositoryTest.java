@@ -5,6 +5,7 @@ import com.chocola.springboot.data.entity.Provider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -85,5 +86,28 @@ class ProviderRepositoryTest {
         //w
         provider.addProduct(List.of(product1, product2, product3));
         providerRepository.save(provider); // Product 객체들까지 persist 된다.
+    }
+
+    @Transactional
+    @Test
+    void orphanRemovalTest() {
+        //g
+        Provider provider = new Provider("ㅇㅇ물산");
+
+        Product product1 = new Product("상품 1", 1000, 1000, provider);
+        Product product2 = new Product("상품 2", 2000, 2000, provider);
+        Product product3 = new Product("상품 3", 3000, 3000, provider);
+
+        //w
+        provider.addProduct(List.of(product1, product2, product3));
+        Provider foundProvider = providerRepository.save(provider);
+        providerRepository.findAll().forEach(System.out::println);
+        productRepository.findAll().forEach(System.out::println);
+
+        foundProvider.remove(0);
+
+        //t
+        providerRepository.findAll().forEach(System.out::println);
+        productRepository.findAll().forEach(System.out::println);
     }
 }

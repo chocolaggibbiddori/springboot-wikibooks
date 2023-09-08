@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -30,7 +31,7 @@ public class Provider {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "provider", fetch = EAGER, cascade = PERSIST)
+    @OneToMany(mappedBy = "provider", fetch = EAGER, cascade = {PERSIST, REMOVE}, orphanRemoval = true)
     @ToString.Exclude
     List<Product> productList = new ArrayList<>();
 
@@ -48,6 +49,10 @@ public class Provider {
 
     public void addProduct(Collection<Product> products) {
         productList.addAll(products);
+    }
+
+    public void remove(int idx) {
+        productList.remove(idx);
     }
 
     @Override
