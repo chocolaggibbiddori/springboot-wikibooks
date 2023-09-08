@@ -42,6 +42,13 @@ public class Product extends BaseEntity {
         this.stock = stock;
     }
 
+    public Product(String name, int price, int stock, Provider provider) {
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.provider = provider;
+    }
+
     public Product(ProductDto productDto) {
         this.name = productDto.getName();
         this.price = productDto.getPrice();

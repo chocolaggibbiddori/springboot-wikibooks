@@ -72,4 +72,18 @@ class ProviderRepositoryTest {
         //t
         System.out.println("productList = " + productList);
     }
+
+    @Test
+    void cascadeTest() {
+        //g
+        Provider provider = new Provider("ㅇㅇ물산");
+
+        Product product1 = new Product("상품 1", 1000, 1000, provider);
+        Product product2 = new Product("상품 2", 2000, 2000, provider);
+        Product product3 = new Product("상품 3", 3000, 3000, provider);
+
+        //w
+        provider.addProduct(List.of(product1, product2, product3));
+        providerRepository.save(provider); // Product 객체들까지 persist 된다.
+    }
 }
