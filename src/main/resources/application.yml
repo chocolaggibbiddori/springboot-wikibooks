@@ -16,3 +16,16 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+info:
+  name: 강동희
+  age: 28
+  contact:
+    email: didrkd684@naver.com
+    phoneNumber: 010-2997-6276
