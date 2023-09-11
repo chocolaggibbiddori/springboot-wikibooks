@@ -1,5 +1,7 @@
 package com.chocola.springboot.controller;
 
+import com.chocola.springboot.common.Constants.ExceptionClass;
+import com.chocola.springboot.common.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,11 @@ public class ExceptionController {
     @GetMapping
     public void getRuntimeException() {
         throw new RuntimeException("getRuntimeException() 메서드 호출");
+    }
+
+    @GetMapping("/custom")
+    public void getCustomException() throws CustomException {
+        throw new CustomException(ExceptionClass.PRODUCT, HttpStatus.BAD_REQUEST, "getCustomException 메서드 호출");
     }
 
     @ExceptionHandler(RuntimeException.class)

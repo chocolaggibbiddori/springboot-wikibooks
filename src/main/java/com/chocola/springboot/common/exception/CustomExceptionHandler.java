@@ -18,7 +18,7 @@ public class CustomExceptionHandler {
     public ResponseEntity<Map<String, String>> handleException(RuntimeException e, HttpServletRequest request) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        log.info("Advice 내 handleException 호출, {}, {}", request.getRequestURI(), e.getMessage());
+        log.error("Advice 내 handleException 호출, {}, {}", request.getRequestURI(), e.getMessage());
 
         Map<String, String> map = new HashMap<>();
         map.put("error type", httpStatus.getReasonPhrase());
@@ -26,5 +26,17 @@ public class CustomExceptionHandler {
         map.put("message", e.getMessage());
 
         return new ResponseEntity<>(map, httpStatus);
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<Map<String, String>> handleException(CustomException e, HttpServletRequest request) {
+        log.error("Advice 내 handleException 호출, {}, {}", request.getRequestURI(), e.getMessage());
+
+        Map<String, String> map = new HashMap<>();
+        map.put("error type", e.getHttpStatusType());
+        map.put("code", String.valueOf(e.getHttpStatusCode()));
+        map.put("message", e.getMessage());
+
+        return new ResponseEntity<>(map, e.getHttpStatus());
     }
 }
