@@ -2,6 +2,7 @@ package com.chocola.springboot.controller;
 
 import com.chocola.springboot.data.dto.MemberDto;
 import com.chocola.springboot.service.RestTemplateService;
+import com.chocola.springboot.service.WebClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,29 +16,30 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestTemplateController {
 
     private final RestTemplateService restTemplateService;
+    private final WebClientService webClientService;
 
     @GetMapping
     public String getName() {
-        return restTemplateService.getName();
+        return webClientService.getName();
     }
 
     @GetMapping("/path-variable")
     public String getNameWithPathVariable() {
-        return restTemplateService.getNameWithPathVariable();
+        return webClientService.getNameWithPathVariable();
     }
 
     @GetMapping("/param")
     public String getNameWithParameter() {
-        return restTemplateService.getNameWithParameter();
+        return webClientService.getNameWithParameter();
     }
 
     @PostMapping
     public ResponseEntity<MemberDto> postDto() {
-        return restTemplateService.postWithParamAndBody();
+        return webClientService.postWithParamAndBody();
     }
 
     @PostMapping("/header")
     public ResponseEntity<MemberDto> postWithHeader() {
-        return restTemplateService.postWithHeader();
+        return webClientService.postWithHeader();
     }
 }
