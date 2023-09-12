@@ -1,8 +1,13 @@
 package com.chocola.springboot.service;
 
 import com.chocola.springboot.data.dto.MemberDto;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -84,5 +89,25 @@ public class RestTemplateService {
 
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.exchange(requestEntity, MemberDto.class);
+    }
+
+    public RestTemplate restTemplate() {
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+
+        HttpClient client = HttpClientBuilder.create()
+                .setMaxConnTotal(500)
+                .setMaxConnPerRoute(500)
+                .build();
+
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setMaxConnTotal(500)
+                .setMaxConnPerRoute(500)
+                .build();
+
+        factory.setHttpClient(httpClient);
+        factory.setConnectTimeout(2000);
+        factory.setReadTimeout(5000);
+
+        return new RestTemplate(factory);
     }
 }
