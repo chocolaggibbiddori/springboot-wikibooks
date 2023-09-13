@@ -29,3 +29,7 @@ info:
   contact:
     email: didrkd684@naver.com
     phoneNumber: 010-2997-6276
+
+springboot:
+  jwt:
+    secret: chocola!@#
